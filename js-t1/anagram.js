@@ -45,14 +45,46 @@ function isAnagram(str1,str2)
  }
 }
  console.log(freqObject1);
- console.log(freqObject2);
+  console.log(freqObject2);
+  // join('some string') will do 
+  console.log(Object.entries(freqObject1).sort().join(','));
+  //a,1,e,1,l,1,p,2
 const isValid = (Object.entries(freqObject1).sort().join(',') === Object.entries(freqObject2).sort().join(','));
 
 return isValid;
-  
+  //[ [ 'a', 1 ], [ 'e', 1 ], [ 'l', 1 ], [ 'p', 2 ] ]
 }
 
-console.log(isAnagram('listen', 'silent')) // true
-console.log(isAnagram('hello', 'world')) // false
-console.log(isAnagram('aaz', 'zza')) // false
-console.log(isAnagram('apple', 'leppa')) // true
+function isAnagram2(str1, str2)
+{
+  if (str1.length !== str2.length)
+  {
+    return false;
+  }
+  const lookup = {};
+
+  for (const arrValue of str1) {
+    lookup[arrValue] ? lookup[arrValue] +=1 : lookup[arrValue] =1
+    
+  }
+  for (const arrValue of str2) {
+    if (!lookup[arrValue]) {
+      return false;
+    }
+    else {
+      lookup[arrValue] -= 1
+      console.log(lookup)
+    }
+    
+  }
+
+
+
+  console.log(lookup)
+  return true;
+}
+
+console.log(isAnagram2('listen', 'silent')) // true
+//console.log(isAnagram2('hello', 'world')) // false
+// console.log(isAnagram2('aaz', 'zza')) // false
+// console.log(isAnagram2('apple', 'leppa')) // true
