@@ -67,15 +67,17 @@ function isAnagram2(str1, str2)
     lookup[arrValue] ? lookup[arrValue] +=1 : lookup[arrValue] =1
     
   }
-  for (const arrValue of str2) {
-    if (!lookup[arrValue]) {
+  for (const arrValue2 of str2) {
+    if (!lookup[arrValue2]) {
       return false;
     }
     else {
-      lookup[arrValue] -= 1
+      lookup[arrValue2] -= 1
       console.log(lookup)
     }
-    
+    // we loop over the second string and decrement the count of each character in the lookup object
+    // until the count reaches zero meaning all characters in the second string have been accounted for
+    // and then return true
   }
 
 
