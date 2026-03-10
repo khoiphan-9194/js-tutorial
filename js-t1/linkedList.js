@@ -1,13 +1,21 @@
 class Node {
+    // a node has:
+    // - piece of data - value
+    // - refrence to the next node - next
     constructor(value) {
         this.value = value;
         this.next = null;
     }
 }
+// example:
 
-// let firstNode = new Node(43)
+// let firstNode = new Node("Hi");
+//  firstNode.next = new Node("there");
+//  firstNode.next.next = new Node ("How")
+//  firstNode.next.next.next = new Node ("Are")
+//  firstNode.next.next.next.next = new Node ("You?")
 
-// console.log(firstNode);
+
 
 class SinglyLinkedList {
     /*
@@ -570,7 +578,7 @@ updateNode(index, newValue) {
 
     // Step 1: If the list is empty, there is nothing to update
     if (!this.head) {
-        return null;
+        return undefined;
     }
 
     // Step 2: Validate the index
