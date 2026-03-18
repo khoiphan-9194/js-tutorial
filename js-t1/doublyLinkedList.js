@@ -30,6 +30,27 @@ class doubleLinkedList
             this.tail = null;
             this.length =0;
     }
+
+    printV1() {
+        let currentNode = this.head; // currentNode now has [value, next]
+        // as long as currentNode not null, we still print out the value
+        while (currentNode) {
+            console.log(currentNode.value);
+            currentNode = currentNode.next;
+        }
+    }
+    printV2() {
+        let arr = [];
+        let currentNode = this.head;
+    
+        while (currentNode) {
+            arr.push(currentNode.value);
+            currentNode = currentNode.next;
+        }
+    
+        return arr;
+    }
+
     push(newValue)
     {
         let newNode = new Node(newValue);
@@ -269,26 +290,138 @@ getNodeV2(index)
     return currentNode;
 }
 
+set(index, newValue)
+{
+    // Use helper function to find the node at the given index
+    let updating_node = this.getNodeV2(index);
 
-    printV1() {
-        let currentNode = this.head; // currentNode now has [value, next]
-        // as long as currentNode not null, we still print out the value
-        while (currentNode) {
-            console.log(currentNode.value);
-            currentNode = currentNode.next;
-        }
+    // If a valid node is found (not null)
+    if(updating_node)
+    {
+        // Update the value of that node
+        updating_node.value = newValue;
+
+        // Return true to indicate success
+        return true;
     }
-    printV2() {
-        let arr = [];
-        let currentNode = this.head;
-    
-        while (currentNode) {
-            arr.push(currentNode.value);
-            currentNode = currentNode.next;
-        }
-    
-        return arr;
+    else
+    {
+        // If index is invalid (out of bounds),
+        // getNodeV2 returns null, so we return false
+        return false;
     }
+}
+insertNode(index, value) {
+
+    // 1️⃣ Validate index
+    // Index must be between 0 and length
+    // (length is allowed because we can insert at the end)
+    if (index < 0 || index > this.length) {
+        return false;
+    }
+
+    // 2️⃣ If inserting at the end, use push()
+    // push() returns the entire list object (which is truthy)
+    // ! converts it to false
+    // !! converts it back to true
+    // So this ensures we return ONLY true/false instead of an object
+    if(index === this.length) return !!this.push(value);
+
+    // 3️⃣ If inserting at the beginning, use unshift()
+    // Same idea as above:
+    // unshift() returns the list → truthy → !! converts to true
+    if(index === 0) return !!this.unshift(value);
+
+    // 4️⃣ Create a new node
+    let newNode = new Node(value);
+
+    // 5️⃣ Find the node BEFORE the position where we want to insert
+    let prevNode = this.getNodeV2(index - 1);
+
+    // This is the node currently at the target index
+    let tempNode = prevNode.next; // (node that will come AFTER newNode)
+
+    /*
+        Before insertion:
+
+        prev <-> tempNode
+
+        After insertion:
+
+        prev <-> newNode <-> tempNode
+    */
+
+    // 6️⃣ Connect prev → newNode
+    prevNode.next = newNode;
+
+    // 7️⃣ Connect newNode → prev (backward link)
+    newNode.previous = prevNode;
+
+    // 8️⃣ Connect newNode → tempNode
+    newNode.next = tempNode;
+
+    // 9️⃣ Connect tempNode → newNode (backward link)
+    tempNode.previous = newNode;
+
+    // 🔟 Increase length because we added a node
+    this.length++;
+
+    // Return true to indicate success
+    return true;
+}
+
+removeNode(index)
+{
+    // 1️⃣ Validate index
+    // Index must be within the list range
+    if (index < 0 || index >= this.length) {
+        console.log("NO index found in the list");
+        return undefined;
+    }
+
+    // 2️⃣ If removing the first node (head)
+    if (index === 0) {
+        return this.shift(); // reuse existing logic
+    }
+
+    // 3️⃣ If removing the last node (tail)
+    if (index === this.length - 1) {
+        return this.pop(); // reuse existing logic
+    }
+
+    // 4️⃣ Get the node we want to remove
+    let removedNode = this.getNodeV2(index);
+
+    /*
+        Current structure:
+
+        nodeBefore <-> removedNode <-> nodeAfter
+
+        We want:
+
+        nodeBefore <-> nodeAfter
+    */
+
+    // 5️⃣ Connect nodeBefore → nodeAfter
+    removedNode.previous.next = removedNode.next;
+
+    // 6️⃣ Connect nodeAfter → nodeBefore
+    removedNode.next.previous = removedNode.previous;
+
+    // 7️⃣ Disconnect removedNode completely (clean memory / good practice)
+    removedNode.next = null;
+    removedNode.previous = null;
+
+    // 8️⃣ Decrease length
+    this.length--;
+
+    // 9️⃣ Return the removed node
+    return removedNode;
+}
+
+
+
+    
 }
 
  let doulist = new doubleLinkedList();
@@ -298,10 +431,10 @@ getNodeV2(index)
  doulist.push(5)
  doulist.push(6)
  doulist.push(7)
-//  doulist.unshift(21);
-console.log(doulist.getNode(2))
 
-//  console.log(doulist.printV1());
+  //console.log(doulist.insertNode(3,"heo"));
+  console.log(doulist.removeNode(2))
+  console.log(doulist.printV2())
 
  
 
