@@ -84,5 +84,5 @@
         return result;
     }
     
-    console.log(longestSubArray([7, 6,6,6,6,6,3, 3, 3, 2, 2, 2, 2])); // 4
+    console.log(longestSubArray([7, 6,6,6,6,6,3, 3, 3, 2, 2, 2, 2])); // 5
     
