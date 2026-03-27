@@ -199,7 +199,7 @@ insertRecursive(value, node = this.root) {
         return false;
     }
 
-    findNode_V4_Recursive(target, nodeFlow = this.root) {
+    findNode_V3_Recursive(target, nodeFlow = this.root) {
 
         // Step 1: If the tree is empty (only on first call) → nothing to find
         if (!this.root) {
@@ -237,7 +237,7 @@ insertRecursive(value, node = this.root) {
         }
     }
    
-    findNode_V5_Recursive(target, nodeFlow = this.root) {
+    findNode_V4_Recursive(target, nodeFlow = this.root) {
 
         // Step 1: If current node is null → stop searching
         // (this means we reached the end and didn't find the value)
@@ -261,23 +261,87 @@ insertRecursive(value, node = this.root) {
             return this.findNode_V3_Recursive(target, nodeFlow.right);
         }
     }
+
+    findMax()
+    {
+        if(!this.root)
+        {
+            return undefined;
+        }
+        let current = this.root;
+        while(current.right)
+        {
+            current = current.right;
+        }
+        return current.value;
+    }
+
+    findSecondLargest() {
+
+        // 🛑 Edge case:
+        // If tree is empty OR only has 1 node → no second largest exists
+        if (!this.root || (!this.root.left && !this.root.right)) {
+          return undefined;
+        }
+      
+        // Start from the root
+        let current = this.root;
+      
+        // This will keep track of the parent of the current node
+        let prev = null;
+      
+        // 🔍 Step 1: Find the LARGEST node
+        // Keep going RIGHT until there is no more right child
+        while (current.right) {
+          prev = current;        // store parent before moving
+          current = current.right; // move to the right child
+        }
+      
+        // At this point:
+        // current = largest node
+        // prev = parent of largest node
+      
+        // 🧠 Step 2: Check if largest node has a LEFT subtree
+        if (current.left) {
+      
+          // If yes → second largest is the MAX of that left subtree
+          // So go LEFT once...
+          let temp = current.left;
+      
+          // ...then go RIGHT as far as possible
+          while (temp.right) {
+            temp = temp.right;
+          }
+      
+          // temp is now the second largest
+          return temp.value;
+        }
+      
+        // 🧠 Step 3: If largest node has NO left subtree
+        // Then its parent (prev) is the second largest
+        return prev.value;
+      }
 }
  /*
              10
             /  \
            5    15
-                  \
-                  20
+               /  \
+              12   16
+                \ 
+                14
         */
     
 
 
 let t = new BinarySearchTree();
-t.insertNode(15);
-t.insertRecursive(10);
+t.insertNode(10);
+t.insertRecursive(15);
 t.insertRecursive(5);
 
-t.insertNode(20);
+t.insertNode(12);
+ //t.insertNode(16);
 
 
-console.log(t.findNode_V3_Recursive(15));
+
+console.log(t.findSecondLargest());
